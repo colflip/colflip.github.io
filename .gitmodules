@@ -1,0 +1,3 @@
+[submodule "hexo-theme-yinwang"]
+	path = hexo-theme-yinwang
+	url = https://github.com/smallyunet/hexo-theme-yinwang.git

@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang="en"><head><title>向量处理机</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="stylesheet" href="/css/bootstrap/bootstrap-tooltips.css"><link rel="stylesheet" href="/css/post.css"><script src="/js/jquery.min.js"></script><meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head><body><script>if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)) {
+  document.body.classList.add('mobile')
+}</script><div><div class="inner"><h2>向量处理机</h2><p>为了充分发挥流水线的效率，实现高性能计算，有的流水线处理设置了向量数据表示和相应的向量指令。这种向量处理机成为向量处理机。（此处的向量和数组类似）不具有向量表示和相应的向量指令的处理机，称为标量处理机。向量处理机有专用型，其高性能是局限于求解那些可以转化为向量运算的问题。</p>
+<h2 id="向量处理方式"><a href="#向量处理方式" class="headerlink" title="向量处理方式"></a>向量处理方式</h2><p>主要有三种方式：①横向处理方式；②纵向处理方式；③纵横处理方式。</p>
+<h2 id="向量处理机的结构"><a href="#向量处理机的结构" class="headerlink" title="向量处理机的结构"></a>向量处理机的结构</h2><p>以CRAY-1机为例，介绍寄存器-寄存器型向量处理机的结构和特点。</p>
+<center>
+<img src="0001.gif" width="75%" height="100%" alt="CRAY-1机结构简图">
+</center>
+
+<h3 id="功能部件"><a href="#功能部件" class="headerlink" title="功能部件"></a>功能部件</h3><p>共有12条可并行工作的单功能流水线，可分别流水地进行地址、向量、标量的各种运算。它为向量运算提供了6个单功能流水部件：整数加（3拍）、逻辑运算（2拍）、移位（4拍）、浮点加（6拍）、浮点乘（7拍）和浮点迭代求倒数（14拍）。每拍为一个时钟周期，12.5ns。</p>
+<h3 id="向量寄存器组V"><a href="#向量寄存器组V" class="headerlink" title="向量寄存器组V"></a>向量寄存器组V</h3><p>每个向量寄存器可以每拍向功能部件提供一个数据元素，或者每拍接受一个从功能部件来的结果元素。</p>
+<h3 id="标量寄存器S和快速暂存器T"><a href="#标量寄存器S和快速暂存器T" class="headerlink" title="标量寄存器S和快速暂存器T"></a>标量寄存器S和快速暂存器T</h3><h3 id="向量屏蔽寄存器VM"><a href="#向量屏蔽寄存器VM" class="headerlink" title="向量屏蔽寄存器VM"></a>向量屏蔽寄存器VM</h3><h2 id="提高向量寄存器性能的方法"><a href="#提高向量寄存器性能的方法" class="headerlink" title="提高向量寄存器性能的方法"></a>提高向量寄存器性能的方法</h2><p>一般有以下方法：①设置多个功能部件，使它们并行工作；②采用链接技术，加快一串向量指令的执行；③采取循环开采技术，加快循环的处理；④采用多处理器系统，进一步提高性能。</p>
+<h3 id="设置多个功能部件"><a href="#设置多个功能部件" class="headerlink" title="设置多个功能部件"></a>设置多个功能部件</h3><p>通过设置多个独立的功能部件，提高性能。这行部件能并行工作并各自按照流水方式工作，从而形成了多条并行工作的运算操作流水线。</p>
+<h3 id="链接技术"><a href="#链接技术" class="headerlink" title="链接技术"></a>链接技术</h3><p>链接技术是指，具有先写后读相关的两条指令，在不出现功能部件冲突和源向量冲突的情况下，可以把功能部件链接起来进行流水处理，以达到加快执行的目的。链接特性是CRAY-1向量处理的一个显著特点。</p>
+<p>链接技术实际上可以看成流水线的定向技术在向量处理机中的应用。当前一个向量功能部件产生第一个结果并送到结果向量寄存器的入口时，将该结果立即送往下一个功能部件的入口，开始后续的向量处理操作。此后依次得到的中间结果都按此处理。这样，前面功能部件的结果元素一产生，就可以立即被后面功能部件所使用，而不用等结果向量全部产生后再来使用。</p>
+<p>进行向量链接时，除了要求无向量寄存器使用冲突和无功能部件使用冲突外，还有一些别的要求：</p>
+<p>（1）只有在前一条指令的第1个结果元素送入结果向量寄存器的那一个时钟周期才可以进行链接。如果错过这个时刻，就无法进行链接了，这是只好等一条指令全部执行完毕、释放相应的向量寄存器之后，才可能执行后面的指令。</p>
+<p>（2）当一条向量指令的两个源操作数分别是两条先行指令的结果寄存器时，要求先行的两条指令产生运算结果的时间必须相等，即要求有关功能部件的通过时间相等。</p>
+<p>（3）要进行链接执行的向量指令的向量长度必须相等，否则无法进行链接。</p>
+<h3 id="分段开采技术"><a href="#分段开采技术" class="headerlink" title="分段开采技术"></a>分段开采技术</h3><p>当向量的长度大于向量寄存器的长度时，必须把长向量分成长度固定的段，然后循环分段处理，每次循环只处理一个向量段。这种技术成为分段开采技术。将长向量分段成循环处理是由系统硬件和软件控制完成的，对程序员是透明的。</p>
+<h3 id="采用多处理机系统"><a href="#采用多处理机系统" class="headerlink" title="采用多处理机系统"></a>采用多处理机系统</h3><hr/><p><span>↶ </span><a href="/">返回首页</a><span></span></p></div></div></body><script src="/js/highlight.min.js"></script><script src="/js/main.js"></script><script src="/js/bootstrap/bootstrap.min.js"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '');</script></html>
