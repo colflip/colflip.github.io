@@ -6,3 +6,12 @@ node_modules/
 public/
 .deploy*/
 _multiconfig.yml
+scaffolds/
+source/
+themes/
+.gitattributes
+.gitignore
+_config.yml
+package.json
+package-lock.json
+yarn.lock
