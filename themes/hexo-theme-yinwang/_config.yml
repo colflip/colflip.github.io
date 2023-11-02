@@ -21,7 +21,10 @@ list:
 # 脚部
 footer:
   display: true               # 是否显示footer
-  context: "2018-2023 © Yohua"     # footer内容
+  context: "2018-2023 ©Yohua<div style="margin: 0 auto;width:1.5%">
+        <script type="text/javascript" id="clstr_globe"
+          src="//clustrmaps.com/globe.js?d=QJL5564OnLfbAoACTZYvXipaP9pJSzB9MMUTwBbYDI4"></script>
+      </div>"     # footer内容
 
 # 文章页
 post:
