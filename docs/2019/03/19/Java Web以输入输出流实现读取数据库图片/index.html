@@ -1,0 +1,159 @@
+<!DOCTYPE html><html lang="en"><head><title>Java Web以输入输出流实现读取数据库图片</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="stylesheet" href="/css/bootstrap/bootstrap-tooltips.css"><link rel="stylesheet" href="/css/post.css"><script src="/js/jquery.min.js"></script><meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head><body><script>if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)) {
+  document.body.classList.add('mobile')
+}</script><div><div class="inner"><h2>Java Web以输入输出流实现读取数据库图片</h2><p>在web开发中，读取显示图片非常常见，实现方式也有很多，下面介绍一种以流的形式实现读取数据库图片。java环境：eclipse，数据库：MySQL。<br>其他过程忽略，只写Servlet和jsp代码。</p>
+<h1 id="Servlet写法"><a href="#Servlet写法" class="headerlink" title="Servlet写法"></a>Servlet写法</h1><pre><code class="bash">          public String imgAddr;
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+          response.setCharacterEncoding("UTF-8");
+          response.setContentType("text/html;charset=UTF-8");
+
+          HttpSession session = request.getSession();
+          String op = request.getParameter("op");
+
+          switch (op) {
+            case "showimg":
+                       imgRead(request, response,imgAddr);
+                       break;
+        default:
+            break;
+        }
+  }
+    private void imgRead(HttpServletRequest request, HttpServletResponse response, String imgAddr) throws ServletException, IOException {
+            // 本地文件路径
+            String filePath = "E:" + File.separator + "Users" + File.separator + "Yohua " + File.separator + "weixinapp "
+                    + File.separator + "Medical_master" + File.separator + imgAddr;
+            File file = new File(filePath);
+            // 获取输出流
+            OutputStream outputStream = response.getOutputStream();
+            FileInputStream fileInputStream = new FileInputStream(file);
+            // 读数据
+            byte[] data = new byte[fileInputStream.available()];
+            fileInputStream.read(data);
+            fileInputStream.close();
+            // 回写
+            response.setContentType(JPG);
+            outputStream.write(data);
+            outputStream.flush();
+            outputStream.close();
+        }
+</code></pre>
+<h1 id="JSP代码"><a href="#JSP代码" class="headerlink" title="JSP代码"></a>JSP代码</h1><pre><code class="bash">&lt;body&gt;
+&lt;img alt="showImage" src="AdminServlet?op=showimg"&gt;
+&lt;/body&gt;
+</code></pre>
+<hr/><p><span>↶ </span><a href="/">返回首页</a><span></span></p></div></div></body><script src="/js/highlight.min.js"></script><script src="/js/main.js"></script><script src="/js/bootstrap/bootstrap.min.js"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '');</script></html>

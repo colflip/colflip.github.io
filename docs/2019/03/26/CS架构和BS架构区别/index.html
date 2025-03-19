@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="en"><head><title>CS架构和BS架构区别</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="stylesheet" href="/css/bootstrap/bootstrap-tooltips.css"><link rel="stylesheet" href="/css/post.css"><script src="/js/jquery.min.js"></script><meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head><body><script>if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)) {
+  document.body.classList.add('mobile')
+}</script><div><div class="inner"><h2>CS架构和BS架构区别</h2><p>B/S架构即Client/Server (客户机/服务器) 结构，是一种熟知的软件系统体系结构，通过将任务合理分配到Client端和Server端，降低了系统的通讯开销，需要安装客户端才可进行管理操作。B/S架构即浏览器和服务器架构模式。它是随着Internet技术的兴起，对C/S架构的一种变化或者改进的架构。在这种架构下，用户工作界面是通过WWW浏览器来实现，极少部分事务逻辑在前端(Browser)实现，但是主要事务逻辑在服务器端(Server)实现，形成所谓三层3-tier结构。</p>
+<table>
+<thead>
+<tr>
+<th align="center">对象</th>
+<th align="center">使用环境</th>
+<th align="center">客户端要求</th>
+<th align="center">软件安装</th>
+<th align="center">升级和维护</th>
+<th align="center">安全性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">C/S</td>
+<td align="center">用户固定，并且处于相同区域，要求拥有相同的操作系统</td>
+<td align="center">需要一定配置要求</td>
+<td align="center">每一个客户端都必须安装和配置软件</td>
+<td align="center">需要用户自己升级</td>
+<td align="center">安全性高</td>
+</tr>
+<tr>
+<td align="center">B/S</td>
+<td align="center">要有操作系统和浏览器，与操作系统平台无关</td>
+<td align="center">对配置基本无要求</td>
+<td align="center">可以在任何地方进行操作而不用安装任何专门的软件</td>
+<td align="center">无需用户操作</td>
+<td align="center">安全性较低</td>
+</tr>
+</tbody></table>
+<h2 id="C-x2F-S的优缺点"><a href="#C-x2F-S的优缺点" class="headerlink" title="C/S的优缺点"></a>C/S的优缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><blockquote>
+<p>能充分发挥客户端PC的处理能力，很多工作可以在客户端处理后再提交给服务器，所以CS客户端响应速度快。</p>
+</blockquote>
+<blockquote>
+<p>操作界面漂亮、形式多样，可以充分满足客户自身的个性化要求。</p>
+</blockquote>
+<blockquote>
+<p>C/S结构的管理信息系统具有较强的事务处理能力，能实现复杂的业务流程。</p>
+</blockquote>
+<blockquote>
+<p>安全性能可以很容易保证，C/S一般面向相对固定的用户群，程序更加注重流程，它可以对权限进行多层次校验，提供了更安全的存取模式，对信息安全的控制能力很强。一般高度机密的信息系统采用C/S结构适宜。</p>
+</blockquote>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><blockquote>
+<p>需要专门的客户端安装程序，分布功能弱，针对点多面广且不具备网络条件的用户群体，不能够实现快速部署安装和配置。</p>
+</blockquote>
+<blockquote>
+<p>兼容性差，对于不同的开发工具，具有较大的局限性。若采用不同工具，需要重新改写程序。  </p>
+</blockquote>
+<blockquote>
+<p>开发、维护成本较高，需要具有一定专业水准的技术人员才能完成，发生一次升级，则所有客户端的程序都需要改变。</p>
+</blockquote>
+<blockquote>
+<p>用户群固定。由于程序需要安装才可使用，因此不适合面向一些不可知的用户，所以适用面窄，通常用于局域网中。</p>
+</blockquote>
+<h2 id="B-x2F-S的优缺点"><a href="#B-x2F-S的优缺点" class="headerlink" title="B/S的优缺点"></a>B/S的优缺点</h2><h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><blockquote>
+<p>分布性强，客户端零维护。只要有网络、浏览器，可以随时随地进行查询、浏览等业务处理。</p>
+</blockquote>
+<blockquote>
+<p>业务扩展简单方便，通过增加网页即可增加服务器功能。  </p>
+</blockquote>
+<blockquote>
+<p>维护简单方便，只需要改变网页，即可实现所有用户的同步更新。</p>
+</blockquote>
+<blockquote>
+<p>开发简单，共享性强。</p>
+</blockquote>
+<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><blockquote>
+<p>个性化特点明显降低，无法实现具有个性化的功能要求。</p>
+</blockquote>
+<blockquote>
+<p>在跨浏览器上，BS架构不尽如人意。</p>
+</blockquote>
+<blockquote>
+<p>客户端服务器端的交互是请求-响应模式，通常动态刷新页面，响应速度明显降低（Ajax可以一定程度上解决这个问题）。无法实现分页显示，给数据库访问造成较大的压力。</p>
+</blockquote>
+<blockquote>
+<p>在速度和安全性上需要花费巨大的设计成本。</p>
+</blockquote>
+<blockquote>
+<p>功能弱化，难以实现传统模式下的特殊功能要求。</p>
+</blockquote>
+<hr/><p><span>↶ </span><a href="/">返回首页</a><span></span></p></div></div></body><script src="/js/highlight.min.js"></script><script src="/js/main.js"></script><script src="/js/bootstrap/bootstrap.min.js"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '');</script></html>

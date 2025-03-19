@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="en"><head><title>指令级并行之多指令流出技术</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="stylesheet" href="/css/bootstrap/bootstrap-tooltips.css"><link rel="stylesheet" href="/css/post.css"><script src="/js/jquery.min.js"></script><meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head><body><script>if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)) {
+  document.body.classList.add('mobile')
+}</script><div><div class="inner"><h2>指令级并行之多指令流出技术</h2><p>虽然希望CPI越小越好，但如果是每次只流出一条指令，CPI就不可能小于1。如果想再进一步提高性能，使CPI小于1，就必须采取多柳树技术（multiple issure），在每个时钟周期流出多条指令。</p>
+<p>多流出处理机有两种基本风格：超标量（superscalar）和超长指令字VLIW（Very Long Instruction Word）。超标量在每个时钟周期流出的指令条数不固定，依代码的具体情况而定，不过有个上限。设这个上限为n，就成该处理机为n流出。对于超标量处理机，既可以通过编译器进行静态调度，也可以基于Tomasulo算法进行动态调度。静态调度的超标量处理机易班采用按序执行，而动态调度的处理机一般采用乱序执行。</p>
+<p>与超标量处理机不同，VLIW处理机在每个时钟周期流出的指令条数是固定的，这些指令构成一条长指令或者一个指令包，在这个指令包中，指令之间的并行性是通过指令显式地表示出来的。这种处理机的指令调度是由编译器静态完成的。</p>
+<p>超标量处理机与VLIW处理机相比有两个优点：</p>
+<p>（1）超标量结构对程序员是透明的，因为处理机能自己检测下一条指令能否流出，从而不需要重新排列指令来满足指令的流出。</p>
+<p>（2）即使是没有经过编译器针对超标量结构进行调度优化的代码或是旧的编译器生成的代码也可以运行，当然运行的效果不会很好。要想达到很好的效果，方法之一就是使用动态超标量调度技术。</p>
+<h2 id="基于静态调度的多流出技术"><a href="#基于静态调度的多流出技术" class="headerlink" title="基于静态调度的多流出技术"></a>基于静态调度的多流出技术</h2><p>典型的超标量处理机每个时钟周期可流出1~8条指令。在静态调度的超标量处理机中，指令按序流出。所有的冲突检测都在流出时进行，由硬件检测当前流出的指令之间是否存在冲突以及当前流出的指令与正在执行的指令是否有冲突。如果当前流出的指令序列中，某条指令存在上述冲突，那么就只流出该指令之前的指令。</p>
+<h2 id="基于动态调度的多流出技术"><a href="#基于动态调度的多流出技术" class="headerlink" title="基于动态调度的多流出技术"></a>基于动态调度的多流出技术</h2><p>在多流出处理机中，动态调度技术是提高性能的一种方法。动态调度不仅在有数据冲突的时候也能提高性能，而且还有可能克服指令流出所受的限制。尽管从硬件角度看，在每个时钟周期最多只能启动一个整数和一个浮点操作的执行，但是动态调度可以使得在流出时不受这个限制，至少在保留站全部被占用之前是如此。</p>
+<p>假如要对Tomasulo算法进行拓展，使之能够支持超标量流水线，但是又不想乱序的向保留站流出指令，应为这会破坏程序语义。为了充分利用动态调度的好处，应该去掉每个时期周期只能流出一条整数指令和一条浮点操作指令的限制。但这会大大地增加指令流出的硬件复杂度。</p>
+<p>另一种比较简单的方法是：将整数所用的表结构与浮点用的表结构分离，分别进行处理，这样就可以同时流出一条浮点指令和一条整数指令到各自的保留站中。</p>
+<p>有两种不同的方法可以用来在采用动态调度的处理机中实现多流出。他们都是监理在这样一个认识之上的：关键在于对保留站的分配和对流水线控制表格的修改。一种方法是在半个时钟周期里完成露出步骤，这样一个时钟周期就能处理两条指令。另一种方法是设置一次能同时处理两条指令的逻辑电路。线代的流出4条或4条以上指令的超标量处理机经常是两种方法都采用。</p>
+<h2 id="超长指令字技术"><a href="#超长指令字技术" class="headerlink" title="超长指令字技术"></a>超长指令字技术</h2><p>与超标量不同，超长指令字技术在指令流出时不需要进行复杂的冲突检测，而是依靠编译器在编译时找出指令之间潜在的并行性，并通过指令调度把可能出现的数据冲突减少到最小，最后把能并行执行的多条指令组装成一条很长的指令。这种指令经常是100到几百位，超长指令字因此得名。</p>
+<p>在VLIW处理机中一般设置多个功能部件。相应的，指令字也被分割成多个字段，每个字段称为一个操作槽，直接独立地控制一个功能部件。为了使功能部件充分忙碌，程序指令序列中应有足够的并行性，从而尽量填满每个操作槽。这种并行性是依靠编译器来挖掘的。编译器把循环展开，并在展开后的代码中进行指令调度。</p>
+<p>在VLIW处理机中，所有的处理和指令安排都是由编译器完成的，它不需要超标量处理机中用于指令流出控制的硬件，因而控制硬件比较简单。特别是当流出宽度增加时，VLIW技术的优点更明显。</p>
+<h3 id="超长指令字技术缺点"><a href="#超长指令字技术缺点" class="headerlink" title="超长指令字技术缺点"></a>超长指令字技术缺点</h3><p>（1）程序代码长度增加</p>
+<p>原因有：一个是为了提高并行性而进行的大量的循环展开，另一个是指令字中的操作槽并非总能填满。虽然编译器会尽量使得各操作部件充分忙碌，但总会出现无法安排指令到操作部件执行的情况，这时指令字中与该操作部件对应的操作槽就没有被利用起来，这会造成空间上的浪费。</p>
+<p>为解决此问题，可采用指令共享立即数字段的方法，或者采用指令压缩存储、调入Cache或译码时展开的方法。</p>
+<p>（2）采用了琐步机制</p>
+<p>由于没有冲突检测硬件，早期VLIW技术都采用琐步机制。在新近的VLIW处理机中，各功能部件有了更多的独立性。可以通过设置适当的硬件动态检测机制，来允许指令流出后的非同步执行。</p>
+<p>（3）机器代码的不兼容性</p>
+<p>在VLIW中，编译生成代码时，是充分利用了指令集的特点以及具体流水线结构的细节（如指令流出数目、功能单元延迟时间等都不同）来进行优化的。所以在不同配置的VLIW中，机器代码差别很大。即使是同一系列的VLIW也难以实现机器代码的兼容。</p>
+<p>为解决此问题，可以采用机器代码翻译或仿真的方法。这两种方法是解决所有移植问题的通用方法。</p>
+<h2 id="多流出处理器受到的限制"><a href="#多流出处理器受到的限制" class="headerlink" title="多流出处理器受到的限制"></a>多流出处理器受到的限制</h2><p>主要受以下三方面影响：</p>
+<p>（1）程序所固有的指令级并行（ILP）。</p>
+<p>（2）硬件实现上的困难。</p>
+<p>（3）超变量和超长指令字处理机器固有的技术限制。</p>
+<h1 id="超流水线处理机"><a href="#超流水线处理机" class="headerlink" title="超流水线处理机"></a>超流水线处理机</h1><hr/><p><span>↶ </span><a href="/">返回首页</a><span></span></p></div></div></body><script src="/js/highlight.min.js"></script><script src="/js/main.js"></script><script src="/js/bootstrap/bootstrap.min.js"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '');</script></html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="en"><head><title>指令级并行之指令的动态调度</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="stylesheet" href="/css/bootstrap/bootstrap-tooltips.css"><link rel="stylesheet" href="/css/post.css"><script src="/js/jquery.min.js"></script><meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head><body><script>if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)) {
+  document.body.classList.add('mobile')
+}</script><div><div class="inner"><h2>指令级并行之指令的动态调度</h2><blockquote>
+<p>在前述的流水线属于静态调度的流水线。在这样的流水线中，当取出的指令与已经在流水线中执行的指令不存在数据相关，或者虽存在数据相关但可以通过定向机制将相关隐藏时，就可以流出这条指令。如果数据相关不能被隐藏，冲突检测硬件就会从使用该数据的指令开始，使流水线停顿（stall），不再取指令和流出指令。</p>
+</blockquote>
+<blockquote>
+<p>静态调度的流水线依靠编译器对代码进行静态调度，以减少相关和调度。之所以成为静态调度，是因为它不是在程序执行的过程中，而是在编译期间进行代码调度和优化。静态调度通过把相关的指令拉开距离来减少可能产生的停顿。</p>
+</blockquote>
+<blockquote>
+<p>动态调度是在程序的执行过程中，依靠专门硬件对代码进行调度。许多线代处理器都采用了动态调度技术。动态调度能在保持数据流和异常行为的情况下，通过硬件对指令执行顺序进行重新安排，减少数据相关导致的停顿。</p>
+</blockquote>
+<blockquote>
+<p>动态调度有许多优点：①能够处理一些编译时情况不明的相关（如涉及存储器访问的相关），并简化了编译器；②能够使本来是面向某一流水线优化编译的代码在其他的流水线（动态调度）上也能高效的执行。当然，动态调度的这些优点是以硬件复杂性的显著增加为代价的。</p>
+</blockquote>
+<h2 id="动态调度的基本思想"><a href="#动态调度的基本思想" class="headerlink" title="动态调度的基本思想"></a>动态调度的基本思想</h2><blockquote>
+<p>前面讨论的简单流水线有一个主演局限性，就是指令时按照程序顺序流出和按序执行的。如果某条指令在流水线中被停顿了，那么后面所有的指令都停止前进。如果相近的指令存在相关，近很可能导致冲突，引起停顿。如果系统中有多个功能部件，那么这些部件很可能因为没有指令可处理而处于空闲状态，系统效率低下。</p>
+</blockquote>
+<blockquote>
+<p>如果可以不要求按程序顺序执行指令，那么就能进一步提高性能。</p>
+</blockquote>
+<blockquote>
+<p>为了支持乱序执行，将前述5段流水线的译码段（ID）细分为以下两个段：</p>
+</blockquote>
+<blockquote>
+<p>（1）流出：指令译码，并检查是否存在结构冲突。如果不存在结构冲突，就将指令流出。</p>
+</blockquote>
+<blockquote>
+<p>（2）读操作数：等待数据冲突消失，然后读操作数。</p>
+</blockquote>
+<blockquote>
+<p>可以看出，指令的流出还是按序流出，但它们在读操作数段可能停顿和互相跨越，因而进入执行段就可能已经乱序了。但是，原来不会发生的冲突在乱序执行时，就可能发生了。Tomasulo算法可以通过使用寄存器重命名来消除它们。</p>
+</blockquote>
+<blockquote>
+<p>采用动态调度的流水线支持多条指令同时处于执行状态，这是动态调度的一大优点。但这要求具有多个功能部件，或者流水功能部件，或者两者兼而有之。</p>
+</blockquote>
+<blockquote>
+<p>指令乱序完成大大增加了异常处理的复杂度。动态调度要保持正确的异常行为，即：只有那些在程序严格按程序顺序执行时会发生的异常，才能真正发生。为此动态调度处理机要做到：对于一条会产生异常的指令来说，只有当处理机确切地知道该指令将被执行后，才允许它产生异常。</p>
+</blockquote>
+<blockquote>
+<p>即使保持了正确的异常行为，动态调度处理机仍可能发生不精确异常。所谓不精确异常是指：当执行指令i导致发生异常时，处理机的现场（状态）与严格按程序顺序执行时指令i的现场不同。反之，如果发生异常时，处理机的现场跟严格按程序顺序执行时指令i的现场相同，就称为是精确异常。不精确异常使得在异常处理后难以接着继续执行程序。</p>
+</blockquote>
+<blockquote>
+<p>之所以会产生不精确的异常，是因为当一场发生（指令i）时：①流水线可能已经执行完按程序顺序是位于指令i之后的指令；②流水线可能还没完成按程序顺序是指令i之前的指令。</p>
+</blockquote>
+<blockquote>
+<p>记分牌算法和Tomasulo算法是两种比较典型的动态调度算法。Tomasulo算法比记分牌算法改进很多，是一种更强的算法。许多开发指令级并行的现代处理机都采用了Tomasulo算法或其变形。</p>
+</blockquote>
+<h1 id="Tomasulo算法"><a href="#Tomasulo算法" class="headerlink" title="Tomasulo算法"></a>Tomasulo算法</h1><hr/><p><span>↶ </span><a href="/">返回首页</a><span></span></p></div></div></body><script src="/js/highlight.min.js"></script><script src="/js/main.js"></script><script src="/js/bootstrap/bootstrap.min.js"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '');</script></html>

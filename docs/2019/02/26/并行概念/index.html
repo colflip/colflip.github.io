@@ -1,0 +1,132 @@
+<!DOCTYPE html><html lang="en"><head><title>并行概念</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="stylesheet" href="/css/bootstrap/bootstrap-tooltips.css"><link rel="stylesheet" href="/css/post.css"><script src="/js/jquery.min.js"></script><meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head><body><script>if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)) {
+  document.body.classList.add('mobile')
+}</script><div><div class="inner"><h2>并行概念</h2><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>指计算机系统在同一时刻或者同一时间间隔内进行多种运算或者操作。在时间上相互重叠。包括同时性与并发性两种含义。</p>
+<pre><code>同时性———两个或者两个以上事件在同一时刻发生。
+
+并发性———两个或者两个事件在同一时间间隔内发生。
+</code></pre>
+<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><p>从处理数据角度：字串位串，字串位并，字并位串，字并位并。</p>
+<p>从执行程序角度：指令内部并行，指令级并行，线程级并行，任务级或过程级并行，作业或程序级并行。</p>
+<h2 id="发展"><a href="#发展" class="headerlink" title="发展"></a>发展</h2><h3 id="单机系统中的发展"><a href="#单机系统中的发展" class="headerlink" title="单机系统中的发展"></a>单机系统中的发展</h3><p>通过“部件功能专用化”实现时间重叠；多体存储器和多操作部件都是通过资源重复形式发展，如将通用部件（如加法部件，减法部件等）重复设置多个，进一步发展成为并行处理机（阵列处理机）；通过模拟多处理机的功能，形成虚拟机，实现资源共享。</p>
+<h3 id="多级系统中的发展"><a href="#多级系统中的发展" class="headerlink" title="多级系统中的发展"></a>多级系统中的发展</h3><p>多机系统分为：同构型多处理机，异构型多处理机，分布式系统。反应在耦合度上，分为紧密耦合和松散耦合。称为紧密耦合系统（直接耦合系统）和松散耦合系统（间接耦合系统）。松散耦合系统又分为两种形式，一种是多台计算机和共享的外存储连接，通过功能专用化，把不同功能计算机处理的结果以文件或者数据集的形式送到共享外存储器，以供其他计算机继续处理。另一种是计算机网络，通过通信线路连接，实现了更大范围的资源共享。</p>
+<h2 id="提高并行性途径"><a href="#提高并行性途径" class="headerlink" title="提高并行性途径"></a>提高并行性途径</h2><p>时间重叠，资源重复，资源共享。</p>
+<p>现行计算机系统中，经常是同时运用时间重叠和资源重复两种措施。</p>
+<h3 id="时间重叠"><a href="#时间重叠" class="headerlink" title="时间重叠"></a>时间重叠</h3><p>在并行性概念中，引入时间概念，让多个处理过程在时间上相互错开，轮流重叠的使用同一套硬件设备的各个部分，以加快硬件周转而赢得速度。典型实例是流水线技术。</p>
+<h3 id="资源重复"><a href="#资源重复" class="headerlink" title="资源重复"></a>资源重复</h3><p>引入空间因素，通过重复设置硬件资源，大幅提高系统性能。</p>
+<h3 id="资源共享"><a href="#资源共享" class="headerlink" title="资源共享"></a>资源共享</h3><p>是一种软件方法，它使多个任务按一定时间顺序轮流使用一套硬件设备。多道程序、分时系统就是遵循这一途径产生。资源共享既降低了成本，又提高了计算机设备的利用率。</p>
+<hr/><p><span>↶ </span><a href="/">返回首页</a><span></span></p></div></div></body><script src="/js/highlight.min.js"></script><script src="/js/main.js"></script><script src="/js/bootstrap/bootstrap.min.js"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '');</script></html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html><html lang="en"><head><title>Hexo NexT网站个性化</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="stylesheet" href="/css/bootstrap/bootstrap-tooltips.css"><link rel="stylesheet" href="/css/post.css"><script src="/js/jquery.min.js"></script><meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head><body><script>if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)) {
+  document.body.classList.add('mobile')
+}</script><div><div class="inner"><h2>Hexo NexT网站个性化</h2><h2 id="添加字数统计、阅读时长"><a href="#添加字数统计、阅读时长" class="headerlink" title="添加字数统计、阅读时长"></a>添加字数统计、阅读时长</h2><p>适用于next 6 以后版本，分两步完成</p>
+<ol>
+<li>安装 npm install hexo-symbols-count-time –save</li>
+<li>主配置文件（根hexo目录） 添加</li>
+</ol>
+<pre><code class="bash">symbols_count_time:
+ symbols: true
+ time: true
+ total_symbols: true
+ total_time: true
+</code></pre>
+<h2 id="添加404公益界面"><a href="#添加404公益界面" class="headerlink" title="添加404公益界面"></a>添加404公益界面</h2><p>创建页面，在 Hexo 文件夹根目录下 /source/404/index.html；</p>
+<pre><code class="bash">---
+title: 404 Not Found：该页无法显示
+toc: false
+comments: false
+permalink: /404
+---
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+         &lt;meta charset="UTF-8" /&gt;
+         &lt;title&gt;404&lt;/title&gt;                                                                                                                                        
+    &lt;/head&gt;
+    &lt;body&gt;
+         &lt;script type="text/javascript" src="//qzonestyle.gtimg.cn/qzone/hybrid/app/404/search_children.js" homePageName="返回首页" homePageUrl="https://yohua.ml"&gt;&lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>部署</p>
+<pre><code class="bash">hexo d -g
+</code></pre>
+<h2 id="添加网易云音乐"><a href="#添加网易云音乐" class="headerlink" title="添加网易云音乐"></a>添加网易云音乐</h2><p>在网易云音乐生成外链，将代码放置合适位置即可。</p>
+<pre><code class="bash">&lt;iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=46 src="//music.163.com/outchain/player?type=2&amp;id=25638273&amp;auto=0&amp;height=46"&gt;&lt;/iframe&gt;
+</code></pre>
+<h2 id="首页隐藏部分文章"><a href="#首页隐藏部分文章" class="headerlink" title="首页隐藏部分文章"></a>首页隐藏部分文章</h2><h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><p>使用插件hexo-generator-index2。</p>
+<p>安装hexo-generator-index2</p>
+<pre><code class="bash">$ npm install hexo-generator-index2 --save
+$ npm uninstall hexo-generator-index --save
+</code></pre>
+<p>修改hexo的配置文件</p>
+<pre><code class="bash"># index2 generator是否包含官方的hexo-generator-index，默认true（包含）
+index2_include_index: true # defult is true
+
+# 配置index2 generator，可以是数组或对象
+index2_generator:
+  per_page: 10
+  order_by: -date
+  include:
+    - category Web # 只包含Web分类下的文章
+  exclude:
+    - tag Hexo # 不包含标签为Hexo的文章
+</code></pre>
+<p>插件链接：<a target="_blank" rel="noopener" href="https://github.com/Jamling/hexo-generator-index2/blob/master/README_zh.md">https://github.com/Jamling/hexo-generator-index2/blob/master/README_zh.md</a></p>
+<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><p>使用另一个插件，效果更好，可以同时对归档的目录隐藏。插件地址:<a target="_blank" rel="noopener" href="https://github.com/printempw/hexo-sage-posts">https://github.com/printempw/hexo-sage-posts</a></p>
+<h2 id="在移动设备下启用NexT主题的目录页面和回到顶部按钮"><a href="#在移动设备下启用NexT主题的目录页面和回到顶部按钮" class="headerlink" title="在移动设备下启用NexT主题的目录页面和回到顶部按钮"></a>在移动设备下启用NexT主题的目录页面和回到顶部按钮</h2><p><a target="_blank" rel="noopener" href="https://leaferx.online/2017/02/05/EnableTOConMobile/">https://leaferx.online/2017/02/05/EnableTOConMobile/</a></p>
+<hr/><p><span>↶ </span><a href="/">返回首页</a><span></span></p></div></div></body><script src="/js/highlight.min.js"></script><script src="/js/main.js"></script><script src="/js/bootstrap/bootstrap.min.js"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '');</script></html>

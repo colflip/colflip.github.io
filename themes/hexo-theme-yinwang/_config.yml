@@ -1,0 +1,55 @@
+
+# 导航栏 开头不带斜杠
+menu:
+  博客: ''
+  Github: 'https://github.com/colflip'
+  标签云: tags
+  关于: about
+ 
+# 建议页数大于1开启
+paginator: false
+
+# 头部
+header:
+  blank: false     # 头部链接是否新标签页打开
+
+# 文章列表
+list:
+  date: true       # 文章列表是否显示日期
+  wordcount: true   # 是否显示字数统计
+
+# 脚部
+footer:
+  display: true               # 是否显示footer
+  context: "2018-2023 ©Yohua<div style="margin: 0 auto;width:1.5%">
+        <script type="text/javascript" id="clstr_globe"
+          src="//clustrmaps.com/globe.js?d=QJL5564OnLfbAoACTZYvXipaP9pJSzB9MMUTwBbYDI4"></script>
+      </div>"     # footer内容
+
+# 文章页
+post:
+  title_h1: false               # 文章是否使用 h1 标题
+  blank: false                 # 文章是否新标签页打开
+  backHome: true              # 文章末尾是否显示返回首页
+  backhome_right: false        # 返回首页内容是否右对齐
+  backHome_hr: true           # 返回首页前是否显示分割线
+  backHome_prefix: "↶ "        # 返回首页的前缀内容
+  backHome_content: "返回首页"   # 返回首页的主体内容
+  backHome_suffix: ""          # 返回首页的后缀内容
+
+# 标签云
+tags:
+  all: true       # 标签云页面是否显示全部标签
+
+# 微博
+github:
+  owner: Colflip
+  repo: hexo-blog
+micro_blogs:
+  - year: 2023
+    issue: 1
+issue_years: []
+
+google_analysis:
+  enable: false
+  id: UA-0000000-1
